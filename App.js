@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,6 +14,8 @@ import {
   View,
   Text,
   StatusBar,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 
 import {
@@ -24,7 +26,131 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import RNCallKeep from 'react-native-callkeep';
+import UUIDGenerator from 'react-native-uuid-generator';
+
+// import {
+//   RTCPeerConnection,
+//   RTCSessionDescription,
+//   MediaStream,
+//   getUserMedia,
+//   RTCView,
+//   MediaStreamTrack
+// } from 'react-native-webrtc';
+
+// Polyfill WebRTC
+// global.MediaStream = MediaStream;
+// global.RTCSessionDescription = RTCSessionDescription;
+// global.RTCPeerConnection = RTCPeerConnection;
+// global.navigator.mediaDevices = {
+//   ...global.navigator.mediaDevices,
+//   getUserMedia: getUserMedia,
+// };
+
 const App: () => React$Node = () => {
+
+  const checkPermissions = async () => {
+    const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+    console.log('granted', granted);
+    return granted;
+  }
+
+  useEffect(() => {
+    const options = {
+      ios: {
+        appName: 'QVIC',
+      },
+      android: {
+        alertTitle: 'Permissions required',
+        alertDescription: 'QVIC needs to access your phone accounts',
+        cancelButton: 'Cancel',
+        okButton: 'Ok',
+      }
+    };
+
+    const onNativeCall = () => {
+      console.log('onNativeCall');
+    }
+
+    const onAnswerCallAction = () => {
+      console.log('onAnswerCallAction');
+    }
+
+    const onEndCallAction = () => {
+      console.log('onEndCallAction');
+    }
+
+    const onIncomingCallDisplayed = () => {
+      console.log('onIncomingCallDisplayed');
+    }
+
+    const onToggleMute = () => {
+      console.log('onToggleMute');
+    }
+
+    const onDTMF = () => {
+      console.log('onDTMF');
+    }
+
+    const makeCall = () => {
+
+      UUIDGenerator.getRandomUUID((uuid) => {
+        console.log(uuid);
+        // RNCallKeep.setAvailable(false);
+        // RNCallKeep.endAllCalls();
+
+        setTimeout(() => {
+          try {
+            console.log('calling');
+            const handle = '+919968967608';
+            const contactIdentifier = "Mohit";
+            RNCallKeep.displayIncomingCall(uuid, handle);
+
+            // RNCallKeep.startCall(uuid, handle, contactIdentifier);
+          } catch (err) {
+            console.error('CallKeep error:', err.message);
+          }
+        }, 2000);
+
+        RNCallKeep.addEventListener('didReceiveStartCallAction', onNativeCall);
+        RNCallKeep.addEventListener('answerCall', onAnswerCallAction);
+        RNCallKeep.addEventListener('endCall', onEndCallAction);
+        RNCallKeep.addEventListener('didDisplayIncomingCall', onIncomingCallDisplayed);
+        RNCallKeep.addEventListener('didPerformSetMutedCallAction', onToggleMute);
+        RNCallKeep.addEventListener('didPerformDTMFAction', onDTMF);
+
+        return () => {
+          RNCallKeep.removeEventListener('didReceiveStartCallAction', onNativeCall);
+          RNCallKeep.removeEventListener('answerCall', onAnswerCallAction);
+          RNCallKeep.removeEventListener('endCall', onEndCallAction);
+          RNCallKeep.removeEventListener('didDisplayIncomingCall', onIncomingCallDisplayed);
+          RNCallKeep.removeEventListener('didPerformSetMutedCallAction', onToggleMute);
+          RNCallKeep.removeEventListener('didPerformDTMFAction', onDTMF);
+        }
+      });
+    }
+
+    checkPermissions()
+      .then(allowed => {
+        if(allowed) {
+          console.log('foo bar....');
+          makeCall();
+        } else {
+          try {
+            console.log('asking for permission');
+            RNCallKeep.setup(options)
+              .then(res => {
+                console.log('accepted', res);
+                makeCall();
+              })
+              .catch(err => console.log('err', res));
+          } catch (err) {
+            console.error('initializeCallKeep error: ', err.message);
+          }
+        }
+      });
+  }, []);
+
   return (
     <>
       <StatusBar barStyle="dark-content" />

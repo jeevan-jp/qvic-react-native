@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "react": "16.11.0",
-    "react-native": "0.62.2"
+    "react-native": "0.62.2",
+    "react-native-callkeep": "^3.0.13",
+    "react-native-uuid-generator": "^6.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
