@@ -34,11 +34,9 @@ import UUIDGenerator from 'react-native-uuid-generator';
 //   RTCSessionDescription,
 //   MediaStream,
 //   getUserMedia,
-//   RTCView,
-//   MediaStreamTrack
 // } from 'react-native-webrtc';
 
-// Polyfill WebRTC
+// // Polyfill WebRTC
 // global.MediaStream = MediaStream;
 // global.RTCSessionDescription = RTCSessionDescription;
 // global.RTCPeerConnection = RTCPeerConnection;
@@ -102,15 +100,13 @@ const App: () => React$Node = () => {
         setTimeout(() => {
           try {
             console.log('calling');
-            const handle = '+919968967608';
+            const handle = '123456789';
             const contactIdentifier = "Mohit";
-            RNCallKeep.displayIncomingCall(uuid, handle);
-
-            // RNCallKeep.startCall(uuid, handle, contactIdentifier);
+            RNCallKeep.displayIncomingCall(uuid, handle, contactIdentifier, 'number', false);
           } catch (err) {
             console.error('CallKeep error:', err.message);
           }
-        }, 2000);
+        }, 5000);
 
         RNCallKeep.addEventListener('didReceiveStartCallAction', onNativeCall);
         RNCallKeep.addEventListener('answerCall', onAnswerCallAction);
@@ -132,8 +128,14 @@ const App: () => React$Node = () => {
 
     checkPermissions()
       .then(allowed => {
-        if(allowed) {
-          console.log('foo bar....');
+        if(!allowed) {
+          console.log('foo bar....');            RNCallKeep.setup(options)
+          RNCallKeep.setup(options)
+          .then(res => {
+            console.log('accepted', res);
+            makeCall();
+          })
+          .catch(err => console.log('err', res));
           makeCall();
         } else {
           try {

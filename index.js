@@ -11,7 +11,7 @@ AppRegistry.registerComponent(appName, () => App);
 if(Platform.OS === "android") {
   AppRegistry.registerHeadlessTask('RNCallKeepBackgroundMessage', () => ({ name, callUUID, handle }) => {
     // Make your call here
-    
+    console.log('hey hey')
     return Promise.resolve();
   });
 }
