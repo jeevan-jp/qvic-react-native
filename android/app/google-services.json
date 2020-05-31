@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "134523079626",
+    "firebase_url": "https://qvic-proxima.firebaseio.com",
+    "project_id": "qvic-proxima",
+    "storage_bucket": "qvic-proxima.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134523079626:android:155849e0fe7204e5151d33",
+        "android_client_info": {
+          "package_name": "com.qvic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134523079626-tn7q1b8o24hbfrofmet490s4hfqid47j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLe9R-urYOaQZrSyt7-pziiA_DA3DWCHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134523079626-tn7q1b8o24hbfrofmet490s4hfqid47j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
