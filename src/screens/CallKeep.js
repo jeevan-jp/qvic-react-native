@@ -16,7 +16,12 @@ import {
   StatusBar,
   PermissionsAndroid,
   Platform,
+  Button,
+  Dimensions
 } from 'react-native';
+import database from '@react-native-firebase/database';
+
+const { height: FULL_HEIGHT, width: FULL_WIDTH } = Dimensions.get('window');
 
 import {
   Header,
@@ -29,8 +34,7 @@ import {
 import RNCallKeep from 'react-native-callkeep';
 import UUIDGenerator from 'react-native-uuid-generator';
 
-const CallKeep = () => {
-
+const CallKeep = (props) => {
   const checkPermissions = async () => {
     const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
     console.log('granted', granted);
@@ -85,12 +89,12 @@ const CallKeep = () => {
           try {
             console.log('calling');
             const handle = uuid;
-            const contactIdentifier = "ABC";
-            RNCallKeep.displayIncomingCall(uuid, handle, contactIdentifier, 'generic', false);
+            const contactIdentifier = "9968967600";
+            RNCallKeep.displayIncomingCall(uuid, handle, contactIdentifier, 'number', false);
           } catch (err) {
             console.error('CallKeep error:', err.message);
           }
-        }, 5000);
+        }, 500);
 
         RNCallKeep.addEventListener('didReceiveStartCallAction', onNativeCall);
         RNCallKeep.addEventListener('answerCall', onAnswerCallAction);
@@ -110,10 +114,11 @@ const CallKeep = () => {
       });
     }
 
-    checkPermissions()
+    const call = () => {
+      console.log('foo bar....');
+      checkPermissions()
       .then(allowed => {
         if(!allowed) {
-          console.log('foo bar....');
           RNCallKeep.setup(options)
           .then(res => {
             console.log('accepted', res);
@@ -135,7 +140,46 @@ const CallKeep = () => {
           }
         }
       });
+    }
+
+    const dbOperation = async (user) => {
+      try {
+        const {uid, phoneNumber: phone} = user;
+        const data = await database().ref(`/users/${uid}`).once('value');
+
+        console.log('phone: ', data.phone);
+
+        if(uid && !data.phone) {
+          console.log('writing');
+          await database().ref(`/users/${uid}`).set({
+            name: 'test-user',
+            userId: 'uid',
+            phone,
+            status: 0,
+          });
+
+          database().ref(`/users/${uid}/status`).on('value', status => {
+            console.log('status', status);
+            if(status == 1) {
+              console.log('status is good=============')
+              call();
+            }
+          });
+        }
+      } catch(err) {
+        console.log('err', err);
+      }
+    }
+    
+    call();
+
+    if(props.user) dbOperation(props.user);
   }, []);
+
+  const onButtonPress = () => {
+    const uid = props.user.uid;
+    database().ref(`/users/${uid}/status`).set(1);
+  }
 
   return (
     <>
@@ -144,14 +188,22 @@ const CallKeep = () => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-          <Header />
+          {/* <Header /> */}
           {global.HermesInternal == null ? null : (
             <View style={styles.engine}>
               <Text style={styles.footer}>Engine: Hermes</Text>
             </View>
           )}
           <View style={styles.body}>
-            <View style={styles.sectionContainer}>
+            <View style={styles.button}>
+              <Button
+                onPress={onButtonPress}
+                title="Call Everyone"
+                color="#841584"
+                accessibilityLabel="Learn more about this purple button"
+              />
+            </View>
+            {/* <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Step One</Text>
               <Text style={styles.sectionDescription}>
                 Edit <Text style={styles.highlight}>App.js</Text> to change this
@@ -176,7 +228,7 @@ const CallKeep = () => {
                 Read the docs to discover what to do next:
               </Text>
             </View>
-            <LearnMoreLinks />
+            <LearnMoreLinks /> */}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -194,6 +246,7 @@ const styles = StyleSheet.create({
   },
   body: {
     backgroundColor: Colors.white,
+    alignItems: 'center',
   },
   sectionContainer: {
     marginTop: 32,
@@ -221,6 +274,10 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     textAlign: 'right',
   },
+  button: {
+    marginTop: FULL_HEIGHT * 0.5,
+    width: FULL_WIDTH * 0.8,
+  }
 });
 
 export default CallKeep;

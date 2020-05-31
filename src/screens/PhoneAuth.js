@@ -62,15 +62,6 @@ class PhoneAuthScreen extends Component {
     }
   }
 
-  componentWillMount() {
-    this.checkAuth();
-  }
-
-  checkAuth = async () => {
-    const user = await auth().currentUser;
-    console.log('user', user);
-  }
-
   renderConfirmationCodeView = () => {
     return (
       <View style={styles.verificationView}>
