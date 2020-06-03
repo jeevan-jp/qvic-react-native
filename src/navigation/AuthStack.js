@@ -1,35 +1,21 @@
-import { createStackNavigator } from 'react-navigation';
-import getSlideFromRightTransition from 'react-navigation-slide-from-right-transition';
+// In App.js in a new project
 
-import Home from '../screens/PhoneAuth';
-import CallKeep from '../screens/CallKeep';
+import * as React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
 
-const AuthStack = createStackNavigator(
-  {
-    Home: {screen: Home, navigationOptions: { header: null }},
-    CallKeep: {
-      screen: CallKeep,
-      navigationOptions: {title: 'Set Up'}
-    },
-  },
-  {
-    initialRouteName: 'Home',
-    mode: 'card',
-    headerMode: 'float',
-    transitionConfig: getSlideFromRightTransition,
-    defaultNavigationOptions: {
-      headerForceInset: { vertical: 'never' },
-      headerTintColor: theme.colors.surface,
-      headerStyle: {
-        backgroundColor: theme.colors.primary,
-        fontWeight: 'bold',
-        height: 80,
-        paddingTop: 30,
-        color: '#fff'
-      },
-      gesturesEnabled: true,
-    },
-  },
-);
+import PhoneAuthScreen from '../screens/PhoneAuth';
+import { NavigationContainer } from '@react-navigation/native';
+
+const Stack = createStackNavigator();
+
+function AuthStack(props) {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="PhoneAuthScreen">
+        <Stack.Screen name="PhoneAuthScreen" component={PhoneAuthScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
 
 export default AuthStack;

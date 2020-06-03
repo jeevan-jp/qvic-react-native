@@ -50,8 +50,9 @@ class PhoneAuthScreen extends Component {
       confirmResult
         .confirm(verificationCode)
         .then(user => {
-          this.setState({ userId: user.uid })
-          alert(`Verified! ${user.uid}`);
+          this.setState({ userId: user.uid });
+          // this.props.navigation.navigate('App');
+          // alert(`Verified! ${user.uid}`);
         })
         .catch(error => {
           alert(error.message)

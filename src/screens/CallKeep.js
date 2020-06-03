@@ -40,6 +40,7 @@ const CallKeep = (props) => {
     console.log('granted', granted);
     return granted;
   }
+  console.log('inside app navigatorrr-------');
 
   useEffect(() => {
     const options = {
@@ -145,33 +146,36 @@ const CallKeep = (props) => {
     const dbOperation = async (user) => {
       try {
         const {uid, phoneNumber: phone} = user;
-        const data = await database().ref(`/users/${uid}`).once('value');
+        const snap = await database().ref(`/users/${uid}`).once('value');
+        const data = snap.val();
 
-        console.log('phone: ', data.phone);
-
-        if(uid && !data.phone) {
-          console.log('writing');
-          await database().ref(`/users/${uid}`).set({
-            name: 'test-user',
-            userId: 'uid',
-            phone,
-            status: 0,
-          });
-
-          database().ref(`/users/${uid}/status`).on('value', status => {
+        const addStatusListener = (flag) => {
+          console.log('adding fb listener---------', flag);
+          database().ref(`/users/${uid}/status`).on('value', snap => {
+            const status = snap.val();
             console.log('status', status);
             if(status == 1) {
-              console.log('status is good=============')
+              console.log('status looks good=============initiate calling protocol');
               call();
             }
           });
+        }
+
+        if(uid && !data.phone) {
+          await database().ref(`/users/${uid}`).set({
+            name: 'test-user',
+            userId: uid,
+            phone,
+            status: 0,
+          });
+          addStatusListener(1);
+        } else {
+          addStatusListener(2);
         }
       } catch(err) {
         console.log('err', err);
       }
     }
-    
-    call();
 
     if(props.user) dbOperation(props.user);
   }, []);

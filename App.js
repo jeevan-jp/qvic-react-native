@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import PhoneAuthScreen from './src/screens/PhoneAuth';
 import auth from '@react-native-firebase/auth';
-import CallKeep from './src/screens/CallKeep';
 import { View, Text } from 'react-native';
+
+import AppNavigator from './src/navigation/AppNavigator';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+
   const checkAuth = async () => {
-    const user = await auth().currentUser;
-    console.log('user', user);
-    setLoading(false);
-    setUser(user);
+    try {
+      const user = await auth().currentUser;
+      console.log('user', user);
+      setLoading(false);
+    } catch(err) {
+      console.log('err in App.js', err);
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -26,8 +30,7 @@ function App() {
     )
   }
 
-  if(user) return <CallKeep user={user} />
-  else  return <PhoneAuthScreen />
+  return <AppNavigator />
 }
 
 export default App;
