@@ -16,8 +16,8 @@ function AppNavigator(props) {
   }, []);
 
   return user
-    ? <AppStack user={user} />
-    : <AuthStack user={user} />
+    ? <AppStack user={user} {...props} />
+    : <AuthStack user={user} {...props} />
 }
 
 export default AppNavigator;

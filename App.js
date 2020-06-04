@@ -4,7 +4,7 @@ import { View, Text } from 'react-native';
 
 import AppNavigator from './src/navigation/AppNavigator';
 
-function App() {
+function App(props) {
   const [loading, setLoading] = useState(true);
 
   const checkAuth = async () => {
@@ -30,7 +30,7 @@ function App() {
     )
   }
 
-  return <AppNavigator />
+  return <AppNavigator {...props} />
 }
 
 export default App;

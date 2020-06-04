@@ -23,13 +23,7 @@ import database from '@react-native-firebase/database';
 
 const { height: FULL_HEIGHT, width: FULL_WIDTH } = Dimensions.get('window');
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import RNCallKeep from 'react-native-callkeep';
 import UUIDGenerator from 'react-native-uuid-generator';
