@@ -12,7 +12,7 @@ function AuthStack(props) {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="PhoneAuthScreen">
-        <Stack.Screen name="PhoneAuthScreen" component={PhoneAuthScreen} />
+        <Stack.Screen name="PhoneAuthScreen" component={PhoneAuthScreen} options={{header: null}} />
       </Stack.Navigator>
     </NavigationContainer>
   );
