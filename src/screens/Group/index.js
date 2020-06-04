@@ -46,7 +46,7 @@ function Group(props) {
   useEffect(() => {
     fetchGroupsAndUsers();
   }, [])
-  
+
   const createNewGroup = () => {
     props.navigation.navigate('CreateGroup');
   }
@@ -69,35 +69,45 @@ function Group(props) {
           style={styles.scrollView}>
           <View style={styles.body}>
             {
-              !loading ? groups.map(({ id, name, description, users: gpUsers, callActive }, i) => (
-                <View style={styles.gpCardContainer} key={"gp" + i}>
-                  <View>
-                    <TouchableOpacity
-                      onPress={e => {
-                        const ids = Object.values(gpUsers);
-                        const names = ids.map(id => users[id].name);
-                        console.log('users', names);
-                        alert(`GROUP MEMBERS: \n\n ${names.map(n => n)}`);
-                      }}
-                    >
-                      <Text style={styles.gpName}>{name}</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.gpDesc}>{description}</Text>
+              !loading ? (
+                <React.Fragment>
+                  {
+                    groups.map(({ id, name, description, users: gpUsers, callActive }, i) => (
+                      <View style={styles.gpCardContainer} key={"gp" + i}>
+                        <View>
+                          <TouchableOpacity
+                            onPress={e => {
+                              const ids = Object.values(gpUsers);
+                              const names = ids.map(id => users[id].name);
+                              console.log('users', names);
+                              alert(`GROUP MEMBERS: \n\n ${names.map(n => n)}`);
+                            }}
+                          >
+                            <Text style={styles.gpName}>{name}</Text>
+                          </TouchableOpacity>
+                          <Text style={styles.gpDesc}>{description}</Text>
+                        </View>
+                        <TouchableOpacity onPress={() => makeGroupCall(id, callActive ? 0 : 1)}>
+                          <Text style={styles.callLabel}>{callActive ? 'cancel' : 'call'}</Text>
+                        </TouchableOpacity>
+                      </View>
+                    ))
+                  }
+                  <View style={styles.button}>
+                    <Button
+                      onPress={createNewGroup}
+                      title="+ New Group"
+                      color="#841584"
+                      accessibilityLabel="Create new group"
+                    />
                   </View>
-                  <TouchableOpacity onPress={() => makeGroupCall(id, callActive ? 0 : 1)}>
-                    <Text style={styles.callLabel}>{callActive ? 'cancel' : 'call'}</Text>
-                  </TouchableOpacity>
+                </React.Fragment>
+              ) : (
+                <View style={{ marginTop: 30 }}>
+                  <Text>One moment...</Text>
                 </View>
-              )) : <View style={{marginTop: 30}}><Text>One moment...</Text></View>
+              )
             }
-            <View style={styles.button}>
-              <Button
-                onPress={createNewGroup}
-                title="+ New Group"
-                color="#841584"
-                accessibilityLabel="Create new group"
-              />
-            </View>
           </View>
         </ScrollView>
       </SafeAreaView>

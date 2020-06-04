@@ -34,7 +34,6 @@ const CallKeep = (props) => {
     console.log('granted', granted);
     return granted;
   }
-  console.log('inside app navigatorrr-------');
 
   useEffect(() => {
     const options = {
