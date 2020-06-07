@@ -37,7 +37,7 @@ function AppStack(props) {
         <Stack.Screen
           name="UserHome"
           component={UserHome}
-          options={{ title: 'Welcome', header: () => null }}
+          options={{ title: 'You Groups' }}
           {...props}
         />
         <Stack.Screen
