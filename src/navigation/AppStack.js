@@ -10,7 +10,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import Group from '../screens/Group';
 import UserHome from '../screens/UserHome';
 import CreateGroup from '../screens/Group/CreateGroup';
-
+import JitsiVideoCall from '../screens/JitsiVideoCall';
 
 const Stack = createStackNavigator();
 
@@ -37,13 +37,20 @@ function AppStack(props) {
         <Stack.Screen
           name="UserHome"
           component={UserHome}
-          options={{ title: 'Welcome' }}
+          options={{ title: 'Welcome', header: () => null }}
           {...props}
         />
         <Stack.Screen
           name="CreateGroup"
           component={CreateGroup}
           options={{ title: 'Create New Group' }}
+          {...props}
+        />
+        <Stack.Screen
+          name="JitsiVideoCall"
+          component={JitsiVideoCall}
+          options={{ header: () => null }}
+          user={user}
           {...props}
         />
       </Stack.Navigator>

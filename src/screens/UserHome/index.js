@@ -27,9 +27,56 @@ function Group(props) {
   const [loading, setLoading] = useState(true);
   const [callingGroup, setCallingGroup] = useState(null);
 
+  const [isPermissionsGranted, setPermissionsGranted] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  const fetchData = async () => {
+  const options = {
+    ios: {
+      appName: 'QVIC',
+    },
+    android: {
+      alertTitle: 'Permissions required',
+      alertDescription: 'QVIC needs to access your phone accounts',
+      cancelButton: 'Cancel',
+      okButton: 'Ok',
+    }
+  };
+
+  const checkPermissions = async () => {
+    const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
+    console.log('granted', granted);
+    return granted;
+  }
+
+  useEffect(() => {
+    // first of all get all permission
+    checkPermissions()
+      .then(allowed => {
+        if(!allowed) {
+          RNCallKeep.setup(options)
+          .then(res => {
+            setPermissionsGranted(true);
+            console.log('setup complete', res);
+
+            if(callingGroup && callingGroup.groupId) {
+              // place call here...
+              console.log('calling group id ==>', callingGroup.groupId);
+            }
+          })
+          .catch(err => console.log('err', err));
+        } else {
+          setPermissionsGranted(true);
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    if(isPermissionsGranted) {
+      fetchGroupAndUserData();
+    }
+  }, [isPermissionsGranted])
+
+  const fetchGroupAndUserData = async () => {
     try {
       database().ref(`/groups`).on('value', snap => {
         const data = snap.val();
@@ -68,35 +115,13 @@ function Group(props) {
     }
   }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-
-  const checkPermissions = async () => {
-    const granted = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.RECORD_AUDIO);
-    console.log('granted', granted);
-    return granted;
-  }
-
-  const options = {
-    ios: {
-      appName: 'QVIC',
-    },
-    android: {
-      alertTitle: 'Permissions required',
-      alertDescription: 'QVIC needs to access your phone accounts',
-      cancelButton: 'Cancel',
-      okButton: 'Ok',
-    }
-  };
-
   const onNativeCall = () => {
     console.log('onNativeCall');
   }
 
   const onAnswerCallAction = () => {
     console.log('onAnswerCallAction');
+    props.navigation.navigate('JitsiVideoCall');
   }
 
   const onEndCallAction = () => {
@@ -146,40 +171,11 @@ function Group(props) {
     RNCallKeep.addEventListener('didPerformDTMFAction', onDTMF);
   }
 
-  const call = () => {
-    console.log('foo bar....');
-    checkPermissions()
-    .then(allowed => {
-      if(!allowed) {
-        // improve this garbage
-        RNCallKeep.setup(options)
-        .then(res => {
-          console.log('accepted', res);
-          makeCall();
-        })
-        .catch(err => console.log('err', res));
-        makeCall();
-      } else {
-        try {
-          console.log('asking for permission');
-          RNCallKeep.setup(options)
-            .then(res => {
-              console.log('accepted', res);
-              makeCall();
-            })
-            .catch(err => console.log('err', res));
-        } catch (err) {
-          console.error('initializeCallKeep error: ', err.message);
-        }
-      }
-    });
-  }
-
   useEffect(() => {
-    if(callingGroup && callingGroup.groupId) {
-      // place call here...
-      console.log('calling group id ==>', callingGroup.groupId);
-      call();
+    RNCallKeep.endAllCalls();
+
+    if(setPermissionsGranted && currentUser && currentUser.groupId) {
+      makeCall();
     }
 
     return () => {

@@ -79,6 +79,8 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
+    entryFile: "index.js",
+    bundleAssetName: "app.bundle",
     enableHermes: false,  // clean and rebuild if changing
 ]
 
@@ -167,8 +169,8 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            // signingConfig signingConfigs.debug
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
+            // signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
@@ -179,6 +181,15 @@ android {
         pickFirst "lib/arm64-v8a/libc++_shared.so"
         pickFirst "lib/x86/libc++_shared.so"
         pickFirst "lib/x86_64/libc++_shared.so"
+
+        pickFirst 'lib/x86/libc++_shared.so'
+        pickFirst 'lib/x86/libjsc.so'
+        pickFirst 'lib/x86_64/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libjsc.so'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/x86_64/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+        pickFirst 'lib/armeabi-v7a/libjsc.so'
     }
 
     // applicationVariants are e.g. debug, release

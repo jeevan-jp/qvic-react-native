@@ -10,7 +10,7 @@ function AppNavigator(props) {
 
   useEffect(() => {
     auth().onAuthStateChanged(userData => {
-      console.log('onAuthStateChanged userData: ', userData);
+      // console.log('onAuthStateChanged userData: ', userData);
       setUser(userData);
     })
   }, []);
