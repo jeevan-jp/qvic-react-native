@@ -141,7 +141,7 @@ function Group(props) {
 
   const onAnswerCallAction = () => {
     console.log('onAnswerCallAction');
-    props.navigation.navigate('JitsiVideoCall');
+    // props.navigation.navigate('JitsiVideoCall');
   }
 
   const onEndCallAction = () => {
@@ -220,8 +220,9 @@ function Group(props) {
 
   const pickCallFromApp = () => {
     RNCallKeep.endAllCalls();
-    // also pass params to the app
-    props.navigation.navigate('JitsiVideoCall', { url: "https://meet.jit.si/testing-jp1" });
+    const uid = currentUser.uid;
+    const name = users[uid] ? users[uid].name : 'User-' + Math.floor(Math.random() * 100);
+    props.navigation.navigate('JitsiVideoCall', { url: "https://meet.jit.si/testing-jp1", name });
   }
 
   return (

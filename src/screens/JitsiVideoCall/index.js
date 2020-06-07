@@ -5,17 +5,18 @@ function JitsiVideoCall(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      const url = props.url || "https://meet.jit.si/testing-jp1"; // can also be only room name and will connect to jitsi meet servers
+      const url = props.route.params.url || "https://meet.jit.si/testing-jp1"; // can also be only room name and will connect to jitsi meet servers
+      const displayName = props.route.params.name || "User";
       const userInfo = {
-        displayName: 'Mohit',
+        displayName: displayName,
         email: 'test@test.com',
         avatar: 'https:/gravatar.com/avatar/abc123'
       };
       JitsiMeet.call(url, userInfo);
       /* Você também pode usar o JitsiMeet.audioCall (url) para chamadas apenas de áudio */
       /* Você pode terminar programaticamente a chamada com JitsiMeet.endCall () */
-    }, 1000);
-  }, [])
+    }, 500);
+  }, []);
 
   useEffect(() => {
     return () => {

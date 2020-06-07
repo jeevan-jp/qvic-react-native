@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const { height: FULL_HEIGHT, width: FULL_WIDTH } = Dimensions.get('window');
@@ -55,6 +56,11 @@ function Group(props) {
     try {
       await database().ref(`/groups/${id}`).update({ callActive: val });
       console.log('call placed successfully');
+      // send admin to jitsi video call
+      const user = await auth().currentUser;
+      const uid = user.uid;
+      const adminName = users[uid] ? users[uid].name : "Admin";
+      props.navigation.navigate('JitsiVideoCall', { name: adminName, url: "https://meet.jit.si/testing-jp1" });
     } catch (err) {
       alert(`${err.message}`);
     }
