@@ -52,15 +52,17 @@ function Group(props) {
     props.navigation.navigate('CreateGroup');
   }
 
-  const makeGroupCall = async (id, val) => {
+  const makeGroupCall = async (groupID, callActiveValue) => {
     try {
-      await database().ref(`/groups/${id}`).update({ callActive: val });
-      console.log('call placed successfully');
-      // send admin to jitsi video call
-      const user = await auth().currentUser;
-      const uid = user.uid;
-      const adminName = users[uid] ? users[uid].name : "Admin";
-      props.navigation.navigate('JitsiVideoCall', { name: adminName, url: "https://meet.jit.si/testing-jp1" });
+      await database().ref(`/groups/${groupID}`).update({ callActive: callActiveValue });
+      console.log('admin call placed successfully');
+      // send admin to jitsi video call if he/she has started a call
+      if(callActiveValue === 1) {
+        const user = await auth().currentUser;
+        const uid = user.uid;
+        const adminName = users[uid] ? users[uid].name : "Admin";
+        props.navigation.navigate('JitsiVideoCall', { name: adminName, url: "https://meet.jit.si/testing-jp1" });
+      }
     } catch (err) {
       alert(`${err.message}`);
     }

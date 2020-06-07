@@ -33,7 +33,20 @@ function AppStack(props) {
       <Stack.Navigator initialRouteName={initialRouteName}>
         <Stack.Screen name="Home" component={Home} {...props} />
         <Stack.Screen name="CallKeep" component={CallKeep} {...props} />
-        <Stack.Screen name="Group" component={Group} {...props} />
+        <Stack.Screen
+          name="Group"
+          component={Group}
+          options={{
+            title: 'Your Groups',
+            headerStyle: { backgroundColor: '#466bff' },
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: '#fff',
+            }
+          }}
+          {...props}
+        />
         <Stack.Screen
           name="UserHome"
           component={UserHome}
@@ -44,7 +57,7 @@ function AppStack(props) {
             headerTitleStyle: {
               fontWeight: 'bold',
               color: '#fff',
-            },
+            }
           }}
           {...props}
         />
