@@ -37,7 +37,15 @@ function AppStack(props) {
         <Stack.Screen
           name="UserHome"
           component={UserHome}
-          options={{ title: 'You Groups' }}
+          options={{
+            title: 'Your Groups',
+            headerStyle: { backgroundColor: '#466bff' },
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              color: '#fff',
+            },
+          }}
           {...props}
         />
         <Stack.Screen

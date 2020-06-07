@@ -5,7 +5,7 @@ function JitsiVideoCall(props) {
 
   useEffect(() => {
     setTimeout(() => {
-      const url = 'https://meet.jit.si/testing-jp1'; // can also be only room name and will connect to jitsi meet servers
+      const url = props.url || "https://meet.jit.si/testing-jp1"; // can also be only room name and will connect to jitsi meet servers
       const userInfo = {
         displayName: 'Mohit',
         email: 'test@test.com',
@@ -25,11 +25,9 @@ function JitsiVideoCall(props) {
 
   function onConferenceTerminated(nativeEvent) {
     /* Conference terminated event */
-    const { user } = props;
-    if(user && user.uid) {
-      props.navigation.goBack();
-    }
-    console.log(nativeEvent);
+    console.log('leaving...');
+    props.navigation.goBack();
+    // console.log(nativeEvent);
   }
 
   function onConferenceJoined(nativeEvent) {

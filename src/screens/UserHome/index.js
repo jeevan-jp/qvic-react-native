@@ -194,7 +194,9 @@ function Group(props) {
   useEffect(() => {
     RNCallKeep.endAllCalls();
 
-    if(setPermissionsGranted && currentUser && currentUser.groupId) {
+
+    if(setPermissionsGranted && callingGroup && callingGroup.groupId) {
+      console.log('MAKING CALL');
       makeCall();
     }
 
@@ -209,10 +211,18 @@ function Group(props) {
   }, [callingGroup]);
 
   const endCall = () => {
+    console.log('ending all calls');
+    RNCallKeep.endAllCalls();
     setCallingGroup(null);
   }
 
   console.log('callingGroup', callingGroup);
+
+  const pickCallFromApp = () => {
+    RNCallKeep.endAllCalls();
+    // also pass params to the app
+    props.navigation.navigate('JitsiVideoCall', { url: "https://meet.jit.si/testing-jp1" });
+  }
 
   return (
     <React.Fragment>
@@ -242,7 +252,7 @@ function Group(props) {
                           <Text style={styles.gpDesc}>{description}</Text>
                         </View>
                         <TouchableOpacity onPress={() => {}}>
-                          <Text style={styles.callLabel}>{callActive ? 'Incoming Call...' : ''}</Text>
+                          <Text style={styles.callLabel}>{callActive && callingGroup ? 'Incoming Call...' : ''}</Text>
                         </TouchableOpacity>
                       </View>
                     ))
@@ -251,10 +261,22 @@ function Group(props) {
                     callingGroup && callingGroup.groupId && (
                       <View style={styles.button}>
                         <Button
+                          onPress={pickCallFromApp}
+                          title="Pick Call from here"
+                          color="#841584"
+                          accessibilityLabel="Pick Call from here"
+                        />
+                      </View>
+                    )
+                  }
+                  {
+                    callingGroup && callingGroup.groupId && (
+                      <View style={styles.button}>
+                        <Button
                           onPress={endCall}
                           title="End Call"
                           color="#841584"
-                          accessibilityLabel="Create new group"
+                          accessibilityLabel="End Call"
                         />
                       </View>
                     )
