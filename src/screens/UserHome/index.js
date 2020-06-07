@@ -12,7 +12,8 @@ import {
   Platform,
   Button,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 import RNCallKeep from 'react-native-callkeep';
@@ -27,7 +28,7 @@ function Group(props) {
   const [loading, setLoading] = useState(true);
   const [callingGroup, setCallingGroup] = useState(null);
 
-  const [isPermissionsGranted, setPermissionsGranted] = useState(false);
+  const [isPermissionsGranted, setPermissionsGranted] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
 
   const options = {
@@ -48,31 +49,50 @@ function Group(props) {
     return granted;
   }
 
-  useEffect(() => {
-    // first of all get all permission
+  const takePermissions = () => {
     checkPermissions()
       .then(allowed => {
         if(!allowed) {
           RNCallKeep.setup(options)
           .then(res => {
-            setPermissionsGranted(true);
             console.log('setup complete', res);
-
-            if(callingGroup && callingGroup.groupId) {
-              // place call here...
-              console.log('calling group id ==>', callingGroup.groupId);
-            }
+            setPermissionsGranted(true);
           })
-          .catch(err => console.log('err', err));
+          .catch(err => {
+            console.log('err', err);
+            setPermissionsGranted(false);
+          });
         } else {
+          console.log('permissions already granted');
           setPermissionsGranted(true);
         }
-      });
+      })
+      .catch(err => {
+        setPermissionsGranted(false);
+      })
+  }
+
+  useEffect(() => {
+    takePermissions();
   }, []);
 
   useEffect(() => {
     if(isPermissionsGranted) {
       fetchGroupAndUserData();
+    } else if(isPermissionsGranted === false) {
+      Alert.alert(
+        'Insufficient Permissions',
+        "Please allow necessary permission.",
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel'
+          },
+          { text: 'Allow', onPress: takePermissions }
+        ],
+        { cancelable: false }
+      );
     }
   }, [isPermissionsGranted])
 
