@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "134523079626-9q27sbq5nqd2k22vpfnhud7t6dg10m1r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qvic",
+            "certificate_hash": "ae9bd262b47e5e64a5f2fd4bacffb0a6120abb6c"
+          }
+        },
+        {
           "client_id": "134523079626-tn7q1b8o24hbfrofmet490s4hfqid47j.apps.googleusercontent.com",
           "client_type": 3
         }

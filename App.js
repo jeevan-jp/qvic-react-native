@@ -1,36 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import auth from '@react-native-firebase/auth';
-import { View, Text } from 'react-native';
+import React from 'react'
+import { View, StatusBar } from 'react-native'
 
-import AppNavigator from './src/navigation/AppNavigator';
+import { Provider } from 'mobx-react'
 
-function App(props) {
-  const [loading, setLoading] = useState(true);
+import AppNavigator from './src/layout/index'
+import colors from './src/styles/colors'
+import stores from './src/store'
+import './src/utils/enableFontPatch'
 
-  const checkAuth = async () => {
-    try {
-      const user = await auth().currentUser;
-      console.log('user', user);
-      setLoading(false);
-    } catch(err) {
-      console.log('err in App.js', err);
-      setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    checkAuth();
-  }, []);
-
-  if(loading) {
+export default class Root extends React.Component {
+  render() {
     return (
-      <View>
-        <Text>One moment please..</Text>
-      </View>
+      <Provider {...stores}>
+        <View style={{ flex: 1 }}>
+          <StatusBar
+            barStyle={'light-content'}
+            backgroundColor={colors.primary}
+          />
+          <AppNavigator />
+        </View>
+      </Provider>
     )
   }
-
-  return <AppNavigator {...props} />
 }
-
-export default App;
