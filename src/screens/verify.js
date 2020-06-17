@@ -38,6 +38,15 @@ export default class Verify extends Component {
     return true
   }
 
+  verify = async () => {
+     console.log("verifying")
+    const isVerify = await this.props.User.verify(this.state.verificationCode)
+    console.log("hiii",isVerify);
+  
+    if (isVerify) {
+      this.props.navigation.replace('Profile')
+    }
+  }
   render() {
     return (
       <View style={style.container}>
@@ -78,10 +87,4 @@ export default class Verify extends Component {
     )
   }
 
-  verify = async () => {
-    const isVerify = await this.props.User.verify(this.state.verificationCode)
-    if (isVerify) {
-      this.props.navigation.replace('Profile')
-    }
-  }
 }

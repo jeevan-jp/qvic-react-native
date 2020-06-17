@@ -37,9 +37,11 @@ class User {
 
   @action
   async verify(verificationCode) {
+    console.log("confirming");
     if (this.confirmResult !== null) {
       const result = await this.confirmResult.confirm(verificationCode)
-      if (result._user) return true
+      console.log(result)
+      if (result.user) return true
       else {
         return false
       }
@@ -72,6 +74,7 @@ class User {
       this.avatarRef = _user.avatarRef
       this.phoneNumber = _user.phoneNumber
       this.key = key
+      // this.groups = _user.groups
     }
   }
 
