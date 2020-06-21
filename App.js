@@ -2,8 +2,8 @@ import React from 'react'
 import { View, StatusBar } from 'react-native'
 
 import { Provider } from 'mobx-react'
-
-import AppNavigator from './src/layout/index'
+import AppNavigator from './src/navigation/AppNavigator'
+// import AppNavigator from './src/layout/index'
 import colors from './src/styles/colors'
 import stores from './src/store'
 import './src/utils/enableFontPatch'

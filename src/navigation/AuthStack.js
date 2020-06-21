@@ -3,16 +3,21 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import PhoneAuthScreen from '../screens/PhoneAuth';
+// import PhoneAuthScreen from '../screens/PhoneAuth';
 import { NavigationContainer } from '@react-navigation/native';
-
+import {Register} from '../screens/register';
+import {Verify} from '../screens/verify';
 const Stack = createStackNavigator();
 
 function AuthStack(props) {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="PhoneAuthScreen">
-        <Stack.Screen name="PhoneAuthScreen" component={PhoneAuthScreen} options={{header: () => null}} />
+    
+      <Stack.Navigator initialRouteName="Register">
+        {/* <Stack.Screen name="PhoneAuthScreen" component={PhoneAuthScreen} options={{header: () => null}} /> */}
+        <Stack.Screen name="Register" component={Register} options={{header: () => null}} />
+        <Stack.Screen name="Verify" component={Verify} options={{header: () => null}} />
+      
       </Stack.Navigator>
     </NavigationContainer>
   );

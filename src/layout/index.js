@@ -11,6 +11,7 @@ import Contacts from '../screens/contacts'
 import Chat from '../screens/chat'
 import { Header } from '../components/header'
 import { ChatHeader } from '../components/chatHeader'
+import CreateGroup from '../screens/Group/CreateGroup';
 
 const handleCustomTransition = ({ scenes }) => {
   if (scenes[scenes.length - 1].route.routeName === 'Contact') return null
@@ -27,6 +28,7 @@ const AppNavigator = createStackNavigator(
         header: null
       }
     },
+
     Register: {
       screen: Register,
       navigationOptions: {
@@ -69,6 +71,21 @@ const AppNavigator = createStackNavigator(
           header: <Header nav={navigation} title={'Contacts'} back absolute />
         }
       }
+    },
+    CreateGroup : {
+        screen: CreateGroup,
+        navigationOptions: ({ navigation }) => {
+          return {
+            header: (
+              <Header
+                nav={navigation}
+                title={'Add members to your group'}
+                back
+                absolute
+              />
+            )
+          }
+        } 
     },
     Chat: {
       screen: Chat,
