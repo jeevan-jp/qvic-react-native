@@ -18,6 +18,7 @@ import Contacts from '../screens/contacts';
 import Chat from '../screens/chat';
 import {Header} from '../components/header';
 import {ChatHeader} from '../components/chatHeader';
+import Profile from '../screens/profile';
 const Stack = createStackNavigator();
 
 function AppStack(props) {
