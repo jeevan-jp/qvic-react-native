@@ -11,7 +11,13 @@ import Group from '../screens/Group';
 import UserHome from '../screens/UserHome';
 import CreateGroup from '../screens/Group/CreateGroup';
 import JitsiVideoCall from '../screens/JitsiVideoCall';
-
+import Spalsh from '../screens/splash';
+import Conversation from '../components/conversation';
+import Contact from '../components/contact';
+import Contacts from '../screens/contacts';
+import Chat from '../screens/chat';
+import {Header} from '../components/header';
+import {ChatHeader} from '../components/chatHeader';
 const Stack = createStackNavigator();
 
 function AppStack(props) {
@@ -74,6 +80,42 @@ function AppStack(props) {
           user={user}
           {...props}
         />
+         <Stack.Screen
+         name="Splash"
+         component={Spalsh}
+         options={{ header: () => null }}
+         {...props}
+         />
+                 <Stack.Screen
+         name="Profile"
+         component={Profile}
+         options={{ header: () => <Header nav={navigation} title={'Profile'} absolute back /> }}
+         {...props}
+         />
+                   <Stack.Screen
+         name="Conversation"
+         component={Conversation}
+         options={{ header: (navigation) => <Header nav={navigation} title={'Profile'} absolute rightIcon={'person'} /> }}
+         {...props}
+         />
+     <Stack.Screen
+         name="Contact"
+         component={Contacts}
+         options={{ header: (navigation) => <Header nav={navigation} title={'Contacts'} absolute rightIcon={'person'} /> }}
+         {...props}
+         />
+       <Stack.Screen
+         name="Chat"
+         component={Chat}
+         options={{ header: (navigation) => <ChatHeader
+          nav={navigation}
+          uri={navigation.state.params.imageURL}
+          title={navigation.state.params.title}
+        /> }}
+         {...props}
+         /> 
+ 
+
       </Stack.Navigator>
     </NavigationContainer>
   ) : (
