@@ -17,7 +17,7 @@ export default class Root extends React.Component {
             barStyle={'light-content'}
             backgroundColor={colors.primary}
           />
-          <AppNavigator />
+          <AppNavigator {...this.props}/>
         </View>
       </Provider>
     )

@@ -80,7 +80,7 @@ export default class Register extends Component {
 
   sendOTP() {
     this.content.flipOutX(400).then(async () => {
-      const _phoneNumber = '+' + this.state.countryCode + this.state.phoneNumber
+      const _phoneNumber = '+' + this.state.countryCode + this.state.phoneNumber;
       const isConfirm = await this.props.User.auth(_phoneNumber)
       if (isConfirm) {
         this.props.navigation.replace('Verify')

@@ -9,10 +9,11 @@ function AppNavigator(props) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    console.log('insdie app navigator');
     auth().onAuthStateChanged(userData => {
-      // console.log('onAuthStateChanged userData: ', userData);
+      console.log('onAuthStateChanged userData: ', userData);
       setUser(userData);
-    })
+    });
   }, []);
 
   return user
