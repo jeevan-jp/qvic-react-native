@@ -26,11 +26,7 @@ function AppStack(props) {
 
   useEffect(() => {
     if(user && user.uid) {
-      database().ref(`/users/${user.uid}/isAdmin`).once('value', snap => {
-        const isAdmin = snap.val();
-        console.log('isAdmin', isAdmin);
-        setInitialRouteName(isAdmin ? 'Group' : 'UserHome');
-      });
+      setInitialRouteName(user.displayName ? 'Profile':'Conversation');
     }
   }, [user]);
 
