@@ -90,15 +90,13 @@ export default class Profile extends Component {
     this.setState({ isLoading: true })
     if (this.props.User.key === '') {
       this.props.User.save().then(userKey => {
-        saveKey(userKey).then(() => {
           this.props.navigation.replace('Splash')
-        })
+        
       })
     } else {
       this.props.User.update().then(() => {
-        saveKey(this.props.User.key).then(() => {
           this.props.navigation.replace('Splash')
-        })
+        
       })
     }
   }

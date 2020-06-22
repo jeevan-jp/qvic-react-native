@@ -81,12 +81,14 @@ class User {
   @action
   async save() {
     const imgData = await this.imageUpload()
+     
     const user = {
       name: this.name,
       phoneNumber: this.phoneNumber,
       avatarSource: imgData.avatarSource,
       avatarRef: imgData.avatarRef
     }
+    auth().currentUser.updateProfile({displayName : this.name})
 
     const key = await this.database.ref('Users').push(user).key
     await this.database
@@ -105,6 +107,9 @@ class User {
       avatarSource: imgData.avatarSource,
       avatarRef: imgData.avatarRef
     }
+    console.log(this.name)
+    auth().currentUser.updateProfile({displayName : this.name})
+
     await this.database
       .ref('Users')
       .child(this.key)
