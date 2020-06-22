@@ -55,7 +55,7 @@ class User {
     if (this.key) {
       key = this.key
     } else {
-      const snapshot = await this.database
+      const snapshot = await database()
         .ref('PhoneNumber')
         .once('value', this.phoneNumber)
       if (snapshot.val() !== null) {
@@ -63,7 +63,7 @@ class User {
         if (key === undefined) return
       }
     }
-    const userSnapshot = await this.database
+    const userSnapshot = await database()
       .ref('Users')
       .child(key)
       .once('value')
@@ -90,10 +90,10 @@ class User {
     }
     auth().currentUser.updateProfile({displayName : this.name})
 
-    const key = await this.database.ref('Users').push(user).key
+    const key = await database.ref('Users').push(user).key
+     console.log(key);
     await this.database
-      .ref('PhoneNumber')
-      .child(this.phoneNumber)
+      .ref(`PhoneNumber/${this.phoneNumber}`)
       .set(key)
     return key
   }
@@ -110,7 +110,7 @@ class User {
     console.log(this.name)
     auth().currentUser.updateProfile({displayName : this.name})
 
-    await this.database
+    await database()
       .ref('Users')
       .child(this.key)
       .set(user)

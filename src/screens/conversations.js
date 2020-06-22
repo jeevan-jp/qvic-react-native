@@ -29,12 +29,12 @@ export default class Conversations extends Component {
         >
           <Icon size={24} name={'message'} color={colors.white} />
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={style.addButton}
           onPress={() => this.props.navigation.navigate('CreateGroup')}
         >
           <Icon size={24} name={'message'} color={colors.white} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     )
   }

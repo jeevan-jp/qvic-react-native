@@ -19,13 +19,13 @@ class Spalsh extends Component {
     auth().onAuthStateChanged(userData => {
       console.log('onAuthStateChanged userData: ', userData);
       if(userData && userData.displayName) {
-        this.props.User.key = userData
-        this.props.Conversation.key = userData
-        this.props.Contact.key = userData
-        this.props.Chat.userKey = userData
+        this.props.User.key = userData.uid
+        this.props.Conversation.key = userData.uid
+        this.props.Contact.key = userData.uid
+        this.props.Chat.userKey = userData.uid
         this.props.navigation.replace('Conversation')
       } else if(userData) {
-        this.props.User.key = userData
+        this.props.User.key = userData.uid
         this.props.navigation.replace('Profile')
 
       }
