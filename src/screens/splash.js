@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { View, Text } from 'react-native'
 
 import style from '../styles/index'
-import { loadKey } from '../utils/db'
 import { inject } from 'mobx-react'
 
 @inject('User')
@@ -16,15 +15,16 @@ class Spalsh extends Component {
   }
 
   componentDidMount() {
-    loadKey((err, result) => {
-      if (result) {
-        this.props.User.key = result
-        this.props.Conversation.key = result
-        this.props.Contact.key = result
-        this.props.Chat.userKey = result
+    auth().onAuthStateChanged(userData => {
+      console.log('onAuthStateChanged userData: ', userData);
+      if(userData && userData.displayName) {
+        this.props.User.key = userData
+        this.props.Conversation.key = userData
+        this.props.Contact.key = userData
+        this.props.Chat.userKey = userData
         this.props.navigation.replace('Conversation')
       } else this.props.navigation.replace('Register')
-    })
+    });
   }
 
   render() {
