@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text } from 'react-native'
+import auth from '@react-native-firebase/auth';
 
 import style from '../styles/index'
 import { inject } from 'mobx-react'
@@ -23,7 +24,13 @@ class Spalsh extends Component {
         this.props.Contact.key = userData
         this.props.Chat.userKey = userData
         this.props.navigation.replace('Conversation')
-      } else this.props.navigation.replace('Register')
+      } else if(userData) {
+        this.props.User.key = userData
+        this.props.navigation.replace('Profile')
+
+      }
+
+       else this.props.navigation.replace('Register')
     });
   }
 

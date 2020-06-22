@@ -8,6 +8,8 @@ import {
   Image,
   BackHandler
 } from 'react-native'
+import auth from '@react-native-firebase/auth';
+
 import { inject } from 'mobx-react'
 import * as Animatable from 'react-native-animatable'
 
@@ -24,13 +26,14 @@ export default class Verify extends Component {
   }
 
   componentDidMount() {
+  
     BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.handleBackPress)
   }
-
+   
   handleBackPress = () => {
     this.content.flipOutX(400).then(() => {
       this.props.navigation.replace('Register')
