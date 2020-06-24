@@ -23,18 +23,18 @@ export default class Conversations extends Component {
     return (
       <View style={style.container}>
         {this.props.Conversation.isLoading ? this.loadView() : this.listView()}
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={style.addButton}
           onPress={() => this.props.navigation.navigate('Contact')}
         >
           <Icon size={24} name={'message'} color={colors.white} />
-        </TouchableOpacity>
-        {/* <TouchableOpacity
+        </TouchableOpacity> */}
+        <TouchableOpacity
           style={style.addButton}
           onPress={() => this.props.navigation.navigate('CreateGroup')}
         >
-          <Icon size={24} name={'message'} color={colors.white} />
-        </TouchableOpacity> */}
+          <Icon size={24} name={'add'} color={colors.white} />
+        </TouchableOpacity>
       </View>
     )
   }

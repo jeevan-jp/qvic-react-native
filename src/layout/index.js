@@ -56,7 +56,7 @@ const AppNavigator = createStackNavigator(
           header: (
             <Header
               nav={navigation}
-              title={'Conversations'}
+              title={'Your Groups'}
               rightIcon={'person'}
               absolute
             />

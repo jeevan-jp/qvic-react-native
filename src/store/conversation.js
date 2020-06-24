@@ -61,6 +61,7 @@ export default class Conversations {
             lastMessage: lastMsg.val() ? lastMsg.val().text : '',
             ...user.val()
           }
+          console.log(`==============>${JSON.stringify(data, null, 2)}`);
           resolve(data)
         }
       })
