@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   TextInput,
   ActivityIndicator,
-  StyleSheet
+  StyleSheet,
+  CheckBox
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
 import { inject, observer } from 'mobx-react'
@@ -58,6 +59,20 @@ export default class Profile extends Component {
           onChangeText={text => (this.props.User.name = text)}
           value={this.props.User.name}
         />
+        <View 
+        style={{
+          flexDirection:"row",
+          textAlign:"center",
+          alignItems:"center",
+          marginLeft: 32,
+          fontSize:15
+          }}>
+         <CheckBox
+         value={this.props.User.isAdmin}
+         onValueChange={() => {this.props.User.isAdmin == false ?this.props.User.isAdmin =true : this.props.User.isAdmin =false }}
+         /> 
+         <Text>Join as Admin</Text>
+         </View>
         {this.state.isLoading ? (
           <ActivityIndicator
             size={'large'}

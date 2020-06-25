@@ -18,7 +18,9 @@ class User {
   avatarRef = ''
   @observable
   fileName = ''
-
+  @observable
+  isAdmin = false
+  @observable
   phoneNumber = ''
   confirmResult = null
 
@@ -74,8 +76,12 @@ class User {
       this.avatarRef = _user.avatarRef
       this.phoneNumber = _user.phoneNumber
       this.key = key
+      this.isAdmin = _user.isAdmin
       // this.groups = _user.groups
+       
     }
+    console.log(this.isAdmin);
+
   }
 
   @action
@@ -86,7 +92,8 @@ class User {
       name: this.name,
       phoneNumber: this.phoneNumber,
       avatarSource: imgData.avatarSource,
-      avatarRef: imgData.avatarRef
+      avatarRef: imgData.avatarRef,
+      isAdmin: this.isAdmin
     }
     auth().currentUser.updateProfile({displayName : this.name})
 
@@ -101,11 +108,13 @@ class User {
   @action
   async update() {
     const imgData = await this.imageUpload()
+    console.log(this.isAdmin);
     const user = {
       name: this.name,
       phoneNumber: this.phoneNumber,
       avatarSource: imgData.avatarSource,
-      avatarRef: imgData.avatarRef
+      avatarRef: imgData.avatarRef,
+      isAdmin: this.isAdmin
     }
     console.log(this.name)
     auth().currentUser.updateProfile({displayName : this.name})
