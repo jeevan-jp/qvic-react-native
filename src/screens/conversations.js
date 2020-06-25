@@ -59,7 +59,7 @@ export default class Conversations extends Component {
               avatarUrl={{ uri: item.avatarSource }}
               onPress={() =>
                 this.props.navigation.navigate('Chat', {
-                  conversationKey: item.key,
+                  conversationKey: item.callUrl,
                   imageURL: item.avatarSource,
                   title: item.name
                 })

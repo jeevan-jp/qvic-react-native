@@ -24,19 +24,19 @@ import database from '@react-native-firebase/database';
         @action
         async save(selectedUserIds) {
           const imgData = await this.imageUpload()
-           
+          let newselectedUserIds = selectedUserIds.push(auth().currentUser.uid); 
           const key = await database().ref('Groups').push().key
           const group = {
             name: this.name,
             avatarSource: imgData.avatarSource,
             avatarRef: imgData.avatarRef,
             adminID: auth().currentUser.uid,
-            users:selectedUserIds,
+            users:newselectedUserIds,
             createdTs: Date.now(),
             callUrl: `https://meet.jit.si/${key}`,
             isCallActive: 0
           }
-           console.log(group);
+           console.log("bye",group);
           for(var i = 0; i<selectedUserIds.length; i++) {
             await database()
             .ref(`Users/${selectedUserIds[i]}/groups`)

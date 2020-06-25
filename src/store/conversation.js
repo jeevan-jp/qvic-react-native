@@ -1,9 +1,10 @@
 import database from '@react-native-firebase/database'
 import { action, observable } from 'mobx'
+import auth from '@react-native-firebase/auth';
 
 export const FETCH_CONVERSATION = 'FETCH_CONVERSATION'
 
-export default class Conversations {
+export default class Conversation {
   constructor() {
     this.database = database()
   }
@@ -18,26 +19,27 @@ export default class Conversations {
   @action
   fetchConversations() {
     this.isLoading = true
-    this.database
-      .ref('Conversations')
-      .orderByChild(this.key)
-      .equalTo(true)
+    database()
+      .ref(`Users/${auth().currentUser.uid}`)
+      .child('groups')
       .on('value', snapshot => {
         let conversations = []
         let promises = []
-
-        snapshot.forEach(item => {
-          promises.push(this.loadUserData(item, this.key))
-        })
-
-        Promise.all(promises).then(data => {
-          data.forEach(item => conversations.push(item))
-          conversations.sort((a, b) => {
-            return b.lastTime - a.lastTime
-          })
-          this.conversations = conversations
-          this.isLoading = false
-        })
+            console.log("hiiiii",snapshot.val());
+            for(key in snapshot.val()){
+              console.log("bro",snapshot.val()[key]);
+              database()
+              .ref(`Groups/${snapshot.val()[key]}`).on('value',snapshot =>{
+                console.log("finak",snapshot);
+             
+                conversations.push(snapshot);   
+                console.log("finakrgrt",conversations);
+                this.conversations = conversations
+                this.isLoading = false
+           
+              });
+            }
+       
       })
   }
 
